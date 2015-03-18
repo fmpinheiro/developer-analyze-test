@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class dynamic-insert="false" dynamic-update="false" mutable="true" name="br.com.segware.Ocorrencia" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="tbl_ocorrencia">
+    <meta attribute="class-description">
+            Detalhes da Ocorrencia
+        </meta>
+    <id column="id" name="id" type="int">
+      <generator class="native"/>
+    </id>
+    <many-to-one cascade="all" class="br.com.segware.Cliente" column="id_cliente" name="idCliente" not-null="true" unique="true"/>
+    <property column="codigo_evento" name="codigoEvento" type="string"/>
+    <property column="tipo_evento" name="tipoEvento" type="string"/>
+    <property column="dtinicio" name="dtInicio" type="timestamp"/>
+    <property column="dtfim" name="dtFim" type="timestamp"/>
+    <many-to-one cascade="all" class="br.com.segware.Atendente" column="id_atendente" name="codigoAtendente" not-null="true" unique="true"/>
+  </class>
+</hibernate-mapping>

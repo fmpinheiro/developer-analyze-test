@@ -14,7 +14,8 @@ public class AnalisadorRelatorioTest {
 
     @Before
     public void before() throws IOException {
-        // analisador = sua implementação
+    	Relatorio r = new LeitorIO().getRelatorio();
+    	analisador= new AnalisadorRelatorioImpl(r);
     }
 
     @Test
@@ -39,8 +40,7 @@ public class AnalisadorRelatorioTest {
 
     @Test
     public void tipoComMaisEventos() {
-        assertArrayEquals(new Tipo[] { Tipo.ALARME, Tipo.DESARME, Tipo.TESTE, Tipo.ARME },
-                analisador.getTiposOrdenadosNumerosEventosDecrescente().toArray(new Tipo[Tipo.values().length]));
+        assertArrayEquals(new Tipo[] { Tipo.ALARME, Tipo.DESARME, Tipo.TESTE, Tipo.ARME }, analisador.getTiposOrdenadosNumerosEventosDecrescente().toArray(new Tipo[Tipo.values().length]));
     }
 
     @Test

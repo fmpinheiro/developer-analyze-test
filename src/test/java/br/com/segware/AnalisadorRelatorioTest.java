@@ -15,6 +15,7 @@ public class AnalisadorRelatorioTest {
     @Before
     public void before() throws IOException {
         // analisador = sua implementação
+        analisador = new ImplemantaAnalisadorRelatorio();
     }
 
     @Test

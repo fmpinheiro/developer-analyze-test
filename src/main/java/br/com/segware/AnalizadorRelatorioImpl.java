@@ -2,6 +2,7 @@ package br.com.segware;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +64,30 @@ public class AnalizadorRelatorioImpl implements IAnalisadorRelatorio {
 
 	@Override
 	public List<Tipo> getTiposOrdenadosNumerosEventosDecrescente() {
+		Map<Tipo, Integer> totalTipo = new HashMap<>();
+		for (Evento evento : this.eventos) {
+			if (totalTipo.containsKey(evento.getTipoEvento())) {
+				totalTipo.put(evento.getTipoEvento(), totalTipo.get(evento.getTipoEvento()) + 1);
+			} else {
+				totalTipo.put(evento.getTipoEvento(), 1);
+			}	
+		}
+		List<Tipo> listaOrdenada = this.ordenaLista(totalTipo);
+		return listaOrdenada;
+	}
+
+	private List<Tipo> ordenaLista(Map<Tipo, Integer> map) {
+		List<Tipo> listaOrdenada= new ArrayList<>(map.keySet());
+		for(int i = 0; i<listaOrdenada.size(); i++){
+			for(int j = 0; j<listaOrdenada.size(); j++){
+		        if (map.get(listaOrdenada.get(i)) > map.get(listaOrdenada.get(j))) {
+		            Tipo temp = listaOrdenada.get(i);
+		            listaOrdenada.set(i, listaOrdenada.get(j));
+		            listaOrdenada.set(j, temp);
+		        }
+			}
+		}
+		return listaOrdenada;
 	}
 
 	@Override

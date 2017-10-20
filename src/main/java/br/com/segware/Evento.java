@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
 
 public class Evento {
 	
-	private String coseq;
+	private int coseq;
 	private String codCliente;
 	private Tipo tipoEvento;
 	private DateTime dataInicio;
@@ -15,7 +15,7 @@ public class Evento {
 	private String codAtendente;
 
 	public Evento(String[] linha) throws ParseException {
-		this.coseq = linha[0];
+		this.coseq = Integer.parseInt((linha[0]));
 		this.codCliente = linha[1];
 		this.tipoEvento = Tipo.valueOf(linha[3]);
 		this.dataInicio = Utils.toDate(linha[4]);
@@ -23,11 +23,11 @@ public class Evento {
 		this.codAtendente = linha[6];
 	}	
 	
-	public String getCoseq() {
+	public int getCoseq() {
 		return coseq;
 	}
 
-	public void setCoseq(String coseq) {
+	public void setCoseq(int coseq) {
 		this.coseq = coseq;
 	}
 

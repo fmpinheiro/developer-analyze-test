@@ -3,10 +3,26 @@ package br.com.segware;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 public class Evento {
 	
 	private String coseq;
 	private String codCliente;
+	private Tipo tipoEvento;
+	private DateTime dataInicio;
+	private DateTime dataFim;
+	private String codAtendente;
+
+	public Evento(String[] linha) throws ParseException {
+		this.coseq = linha[0];
+		this.codCliente = linha[1];
+		this.tipoEvento = Tipo.valueOf(linha[3]);
+		this.dataInicio = Utils.toDate(linha[4]);
+		this.dataFim = Utils.toDate(linha[5]);
+		this.codAtendente = linha[6];
+	}	
+	
 	public String getCoseq() {
 		return coseq;
 	}
@@ -31,19 +47,19 @@ public class Evento {
 		this.tipoEvento = tipoEvento;
 	}
 
-	public Date getDataInicio() {
+	public DateTime getDataInicio() {
 		return dataInicio;
 	}
 
-	public void setDataInicio(Date dataInicio) {
+	public void setDataInicio(DateTime dataInicio) {
 		this.dataInicio = dataInicio;
 	}
 
-	public Date getDataFim() {
+	public DateTime getDataFim() {
 		return dataFim;
 	}
 
-	public void setDataFim(Date dataFim) {
+	public void setDataFim(DateTime dataFim) {
 		this.dataFim = dataFim;
 	}
 
@@ -55,17 +71,5 @@ public class Evento {
 		this.codAtendente = codAtendente;
 	}
 
-	private Tipo tipoEvento;
-	private Date dataInicio;
-	private Date dataFim;
-	private String codAtendente;
 
-	public Evento(String[] linha) throws ParseException {
-		this.coseq = linha[0];
-		this.codCliente = linha[1];
-		this.tipoEvento = Tipo.valueOf(linha[3]);
-		this.dataInicio = Utils.toDate(linha[4]);
-		this.dataFim = Utils.toDate(linha[5]);
-		this.codAtendente = linha[6];
-	}	
 }

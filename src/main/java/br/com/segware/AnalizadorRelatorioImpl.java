@@ -8,14 +8,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.joda.time.Seconds;
+
 public class AnalizadorRelatorioImpl implements IAnalisadorRelatorio {
 
 	private RelatorioDAO relatorioDAO;
+	private List<Evento> eventos;
 
 	public AnalizadorRelatorioImpl() {
 		try {
 			this.relatorioDAO = new RelatorioDAO("/home/yuri/Documentos/segware/developer-test-file-analyze/src/test/java/br/com/segware/relatorio.csv");
-		} catch (FileNotFoundException e) {
+			this.eventos = this.relatorioDAO.readFile();
+		} catch (Exception e) {
 			System.out.print(e.getMessage());
 		}
 	}
@@ -23,31 +27,42 @@ public class AnalizadorRelatorioImpl implements IAnalisadorRelatorio {
 	@Override
 	public Map<String, Integer> getTotalEventosCliente() {
 		Map<String, Integer> totalEventos = new HashMap<>();
-		try {
-			List<Evento> eventos = this.relatorioDAO.readFile();
-			for (Evento evento : eventos) {
+			for (Evento evento : this.eventos) {
 				if (totalEventos.containsKey(evento.getCodCliente())) {
 					totalEventos.put(evento.getCodCliente(), totalEventos.get(evento.getCodCliente()) + 1);
 				} else {
 					totalEventos.put(evento.getCodCliente(), 1);
-
 				}
+				
 			}
-		} catch (Exception e) {
-			System.out.print(e.getMessage());
-		}
 		return totalEventos;
 	}
 
 	@Override
 	public Map<String, Long> getTempoMedioAtendimentoAtendente() {
-		return null;
+		Map<String, Long> tempoAtendimento = new HashMap<>();
+			for (Evento evento : this.eventos) {
+				if (!tempoAtendimento.containsKey(evento.getCodAtendente())) {
+					tempoAtendimento.put(evento.getCodAtendente(), this.calculaMediaTempoAtendimento(evento.getCodAtendente()));
+				}
+			}
+		return tempoAtendimento;
+	}
+
+	private Long calculaMediaTempoAtendimento(String codAtendente) {
+		Long quantidadeEventos = 0L;
+		Long somatorio = 0L;
+		for (Evento evento : this.eventos) {
+			if (evento.getCodAtendente().equals(codAtendente)) {
+				quantidadeEventos++;
+				somatorio += (evento.getDataFim().getMillis() - evento.getDataInicio().getMillis())/1000; 
+			}
+		}
+		return somatorio/quantidadeEventos;
 	}
 
 	@Override
 	public List<Tipo> getTiposOrdenadosNumerosEventosDecrescente() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

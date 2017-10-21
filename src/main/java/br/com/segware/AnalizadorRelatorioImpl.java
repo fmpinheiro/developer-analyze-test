@@ -14,7 +14,7 @@ public class AnalizadorRelatorioImpl implements IAnalisadorRelatorio {
 
 	public AnalizadorRelatorioImpl() {
 		try {
-			this.relatorioDAO = new RelatorioDAO("/home/yuri/Documentos/segware/developer-test-file-analyze/src/test/java/br/com/segware/relatorio.csv");
+			this.relatorioDAO = new RelatorioDAO("src/test/java/br/com/segware/relatorio.csv");
 			this.eventos = this.relatorioDAO.readFile();
 		} catch (Exception e) {
 			System.out.print(e.getMessage());
@@ -30,7 +30,6 @@ public class AnalizadorRelatorioImpl implements IAnalisadorRelatorio {
 			} else {
 				totalEventos.put(evento.getCodCliente(), 1);
 			}
-
 		}
 		return totalEventos;
 	}
@@ -88,23 +87,24 @@ public class AnalizadorRelatorioImpl implements IAnalisadorRelatorio {
 
 	@Override
 	public List<Integer> getCodigoSequencialEventosDesarmeAposAlarme() {
-		List<Integer> listaDesarmes=new ArrayList<>();
-		for(Evento alarme : eventos){
-			if(Tipo.ALARME.equals(alarme.getTipoEvento())){
-				for(Evento desarme : eventos){
-					if(Tipo.DESARME.equals(desarme.getTipoEvento()) && desarme.getCodCliente().equals(alarme.getCodCliente())){
-						if(calculaTempo(alarme.getDataInicio(), desarme.getDataFim())/60<5 && calculaTempo(alarme.getDataInicio(), desarme.getDataFim())/60>0){
-							listaDesarmes.add(desarme.getCoseq());
+		List<Integer> listaDesarmes = new ArrayList<>();
+		for (int i = 0; i < eventos.size(); i++) {
+			if (Tipo.DESARME.equals(eventos.get(i).getTipoEvento())) {
+				for (int j = 0; j < i; j++) {
+					if (Tipo.ALARME.equals(eventos.get(j).getTipoEvento()) && eventos.get(j).getCodCliente().equals(eventos.get(i).getCodCliente())) {
+						if (calculaTempo(eventos.get(j).getDataInicio(), eventos.get(i).getDataFim()) / 60 < 5) {
+							listaDesarmes.add(eventos.get(i).getCoseq());
 						}
 					}
 				}
+
 			}
 		}
 		return listaDesarmes;
 	}
-	
-	private Long calculaTempo(DateTime dataInicio, DateTime dataFinal){
-		return (dataFinal.getMillis()-dataInicio.getMillis())/1000;
+
+	private Long calculaTempo(DateTime dataInicio, DateTime dataFinal) {
+		return (dataFinal.getMillis() - dataInicio.getMillis()) / 1000;
 	}
 
 }

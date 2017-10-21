@@ -10,11 +10,11 @@ import org.junit.Test;
 
 public class AnalisadorRelatorioTest {
 
-    IAnalisadorRelatorio analisador;
+    private IAnalisadorRelatorio analisador;
 
     @Before
     public void before() throws IOException {
-        // analisador = sua implementação
+        this.analisador = new AnalizadorRelatorioImpl();
     }
 
     @Test

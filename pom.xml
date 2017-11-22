@@ -31,7 +31,13 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+         <dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>3.8</version>
+	    </dependency>
+	    </dependencies>
+	   
 
     <build>
         <plugins>
@@ -41,8 +47,8 @@
                 <version>3.1</version>
                 <configuration>
                     <encoding>utf8</encoding>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>

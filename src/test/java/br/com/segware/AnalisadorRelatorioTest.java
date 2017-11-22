@@ -8,13 +8,15 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.segware.AnalisadorRelatorioImpl;;
+
 public class AnalisadorRelatorioTest {
 
     IAnalisadorRelatorio analisador;
 
     @Before
     public void before() throws IOException {
-        // analisador = sua implementação
+        analisador = new AnalisadorRelatorioImpl();
     }
 
     @Test

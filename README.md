@@ -25,3 +25,15 @@ Ex:
 1,0001,E130,ALARME,2014-06-25 12:00:00,2014-06-25 12:05:32,AT01
 2,0002,E131,ARME,2014-06-25 12:01:03,2014-06-25 12:05:36,AT02
 ```
+
+## Considerações Finais
+
+Implementação dos metodos da Interface IAnalisadorRelatorio.
+Implementation of the methods of Interface IAnalisadorReport.
+
+Repositório CSV responsavel por abrir, analisar e fechar o arquivo importado, classe desacoplada da implementação.
+CSV repository responsible for opening, parsing, and closing the imported file, decoupled class from the implementation.
+
+Java 8 com Stream foi utilizado para produzir as soluções de contar, agrupar, filtrar, 
+Java 8 with Stream was used to produce counting, grouping, filtering, ...
+

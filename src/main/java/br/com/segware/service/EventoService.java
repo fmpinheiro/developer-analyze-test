@@ -19,5 +19,5 @@ public class EventoService implements Service<Evento> {
 	public Set<Evento> findAll() {
 		return repository.findAll();
 	}
-
+	
 }

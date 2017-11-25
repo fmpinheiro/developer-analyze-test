@@ -8,13 +8,22 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.segware.controller.Controller;
+import br.com.segware.controller.EventoController;
+import br.com.segware.model.Evento;
+
 public class AnalisadorRelatorioTest {
 
     IAnalisadorRelatorio analisador;
+    
+    private Controller<Evento> controller;
+    
+    private final static String RESOURCE_FILE = "src/test/resources/relatorio.csv";
 
     @Before
     public void before() throws IOException {
-        analisador = new AnalisadorRelatorio();
+    	this.controller = new EventoController(RESOURCE_FILE);
+        analisador = new AnalisadorRelatorio(this.controller);
     }
 
     @Test

@@ -19,23 +19,17 @@ public class EventoInMemoryRepositoryTest {
 	}
 	
 	@Test
-	public void deveInserirEventos() {
-		final Evento evento = criarEvento(1L);
-		final Evento outroEvento = criarEvento(2L);
+	public void shouldInsertAllEvents() {
+		final Evento event = new Evento();
+		final Evento anotherEvent = new Evento();
 		
-		final Set<Evento> eventos = new HashSet<>();
-		eventos.add(evento);
-		eventos.add(outroEvento);
+		final Set<Evento> events = new HashSet<>();
+		events.add(event);
+		events.add(anotherEvent);
 		
-		repository.insertAll(eventos);
+		repository.insertAll(events);
 		
 		Assert.assertEquals(repository.findAll().size(), 2);
-	}
-	
-	private Evento criarEvento(final Long codigoEvento) {
-		final Evento evento = new Evento();
-		evento.setCodigoEvento(codigoEvento);
-		return evento;
 	}
 
 }

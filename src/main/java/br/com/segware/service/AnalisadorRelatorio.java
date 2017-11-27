@@ -107,7 +107,7 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 	}
 
 	private List<Tipo> getTiposEventosOrdenados(final List<TotalTipoEvento> totaisTipoEvento) {
-		ordernarDecrescente(totaisTipoEvento);
+		ordernarTotaisTipoEventoDecrescente(totaisTipoEvento);
 		final List<Tipo> tiposEvento = new ArrayList<>();
 		for (TotalTipoEvento tipoEvento : totaisTipoEvento) {
 			tiposEvento.add(tipoEvento.getTipo());
@@ -126,7 +126,7 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 		}
 	}
 
-	private void ordernarDecrescente(final List<TotalTipoEvento> totaisTipoEvento) {
+	private void ordernarTotaisTipoEventoDecrescente(final List<TotalTipoEvento> totaisTipoEvento) {
 		Collections.sort(totaisTipoEvento, new Comparator<TotalTipoEvento>() {
 			@Override
 			public int compare(final TotalTipoEvento o1, final TotalTipoEvento o2) {
@@ -134,9 +134,18 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 			}
 		});
 	}
+	
+	private void ordernarEventosCrescente(final List<Evento> eventos) {
+		Collections.sort(eventos, new Comparator<Evento>() {
+			@Override
+			public int compare(final Evento o1, final Evento o2) {
+				return o1.getCodigoSequencial().compareTo(o2.getCodigoSequencial());
+			}
+		});
+	}
 
 	private void agruparEventosTipo(final Map<Tipo, Long> quantidadeEventosTipo) {
-		final List<Evento> eventos = controller.findAll();
+		final List<Evento> eventos = getCopy(controller.findAll());
 		for (Evento evento : eventos) {
 			final Tipo tipoEvento = evento.getTipo();
 			if (!quantidadeEventosTipo.containsKey(tipoEvento)) {
@@ -147,14 +156,19 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 			quantidadeEventosTipo.put(tipoEvento, quantidadeAtendimentosAtendente + 1);
 		}
 	}
+	
+	private List<Evento> getCopy(final List<Evento> original) {
+		return new ArrayList<>(original);
+	}
 
 	@Override
 	public List<Integer> getCodigoSequencialEventosDesarmeAposAlarme() {
-		final List<Evento> eventosCliente = controller.findAll();
+		final List<Evento> eventosCliente = getCopy(controller.findAll());
 		final List<Integer> codigosSequenciaisEventos = new ArrayList<>();
 		final Map<String, Evento> ultimoAlarmeClientes = new HashMap<>();
-		
 		final int limiteMinutosDesarme = 5;
+
+		ordernarEventosCrescente(eventosCliente);
 		
 		for (int i = 1; i < eventosCliente.size(); i++) {
 			final Evento eventoAnterior = eventosCliente.get(i-1);

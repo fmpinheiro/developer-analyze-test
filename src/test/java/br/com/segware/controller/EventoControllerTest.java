@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -56,7 +55,7 @@ public class EventoControllerTest {
 	public void shouldLoadCsvFile() {
 		controller.loadCsv();
 		
-		final Set<Evento> events = controller.findAll();
+		final List<Evento> events = controller.findAll();
 		Assert.assertEquals(2, events.size());
 	}
 

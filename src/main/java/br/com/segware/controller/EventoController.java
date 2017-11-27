@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import br.com.segware.Tipo;
+import br.com.segware.enums.Tipo;
 import br.com.segware.model.Evento;
 import br.com.segware.service.EventoService;
 import br.com.segware.service.Service;
@@ -52,7 +52,7 @@ public class EventoController implements Controller<Evento> {
 	}
 
 	@Override
-	public Set<Evento> findAll() {
+	public List<Evento> findAll() {
 		return service.findAll();
 	}
 	

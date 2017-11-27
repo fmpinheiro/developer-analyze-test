@@ -1,5 +1,6 @@
 package br.com.segware.service;
 
+import java.util.List;
 import java.util.Set;
 
 import br.com.segware.model.Evento;
@@ -16,7 +17,7 @@ public class EventoService implements Service<Evento> {
 	}
 	
 	@Override
-	public Set<Evento> findAll() {
+	public List<Evento> findAll() {
 		return repository.findAll();
 	}
 	

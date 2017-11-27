@@ -1,11 +1,11 @@
 package br.com.segware.controller;
 
-import java.util.Set;
+import java.util.List;
 
 public interface Controller<T> {
 
 	void loadCsv();
 	
-	Set<T> findAll();
+	List<T> findAll();
 	
 }

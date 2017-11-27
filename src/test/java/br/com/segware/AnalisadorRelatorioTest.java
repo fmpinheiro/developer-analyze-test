@@ -10,7 +10,10 @@ import org.junit.Test;
 
 import br.com.segware.controller.Controller;
 import br.com.segware.controller.EventoController;
+import br.com.segware.enums.Tipo;
 import br.com.segware.model.Evento;
+import br.com.segware.service.AnalisadorRelatorio;
+import br.com.segware.service.IAnalisadorRelatorio;
 
 public class AnalisadorRelatorioTest {
 

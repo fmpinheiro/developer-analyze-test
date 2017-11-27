@@ -1,4 +1,4 @@
-package br.com.segware;
+package br.com.segware.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import br.com.segware.controller.Controller;
+import br.com.segware.enums.Tipo;
 import br.com.segware.model.Evento;
 import br.com.segware.model.TotalTipoEvento;
 import br.com.segware.util.DateUtil;
@@ -18,20 +18,15 @@ import br.com.segware.util.DateUtil;
 public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 
 	private Controller<Evento> controller;
-	private Set<Evento> eventos;
 
 	public AnalisadorRelatorio(final Controller<Evento> controller) {
 		this.controller = controller;
-		init();
+		this.controller.loadCsv();
 	}
 	
-	private void init() {
-		this.controller.loadCsv();
-		this.eventos = controller.findAll();
-	}
-
 	@Override
 	public Map<String, Integer> getTotalEventosCliente() {
+		final List<Evento> eventos = controller.findAll();
 		final Map<String, Integer> numeroEventosCliente = new HashMap<>();
 
 		for (Evento evento : eventos) {
@@ -78,6 +73,7 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 
 	private void totalizarAtendimentosAtendente(final Map<String, Long> quantidadeAtentimentosAtendente,
 			final Map<String, Long> tempoGastoAtendentes) {
+		final List<Evento> eventos = controller.findAll();
 		
 		for (Evento evento : eventos) {
 			final String codigoAtendente = evento.getCodigoAtendente();
@@ -140,6 +136,7 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 	}
 
 	private void agruparEventosTipo(final Map<Tipo, Long> quantidadeEventosTipo) {
+		final List<Evento> eventos = controller.findAll();
 		for (Evento evento : eventos) {
 			final Tipo tipoEvento = evento.getTipo();
 			if (!quantidadeEventosTipo.containsKey(tipoEvento)) {
@@ -153,42 +150,35 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 
 	@Override
 	public List<Integer> getCodigoSequencialEventosDesarmeAposAlarme() {
-//		final Set<Evento> eventos = controller.findAll();
-//		final Map<String, List<Evento>> eventosCliente = new HashMap<>();
-//
-//		List<Evento> eventosAgrupar = null;
-//		
-//		for (Evento evento : eventos) {
-//			final String codigoCliente = evento.getCodigoCliente();
-//			if (!eventosCliente.containsKey(codigoCliente)) {
-//				eventosAgrupar = new ArrayList<>();
-//				eventosCliente.put(codigoCliente, eventosAgrupar);
-//			}
-//			eventosCliente.get(codigoCliente).add(evento);
-//		}
-//		
-//		List<Integer> codigosSequenciais = new ArrayList<>();
-//		for (Entry<String, List<Evento>> entry : eventosCliente.entrySet()) {
-//			final List<Evento> sequenciaEventosCliente = entry.getValue();
-//			
-//			Evento ultimoEvento = sequenciaEventosCliente.get(0);
-//			Tipo ultimoTipo = ultimoEvento.getTipo();
-//			String ultimoCliente = ultimoEvento.getCodigoCliente();
-//			Long ultimoIntervaloMinutos = DateUtil.calculateDateDiff(ultimoEvento.getDataInicio(), 
-//					ultimoEvento.getDataInicio(), TimeUnit.MINUTES);
-//			
-//			for (Evento evento : sequenciaEventosCliente) {
-//				if (ultimoTipo.equals(Tipo.ALARME) && evento.getTipo().equals(Tipo.DESARME)) {
-//					codigosSequenciais.add(evento.getCodigoSequencial().intValue());
-//					ultimoIntervaloMinutos = DateUtil.calculateDateDiff(evento.getDataInicio(), ultimoEvento.getDataInicio(), TimeUnit.MINUTES);
-//					ultimoEvento = evento;
-//					ultimoTipo = evento.getTipo();
-//					ultimoCliente = evento.getCodigoCliente();
-//				}
-//			}
-//		}
-//		
-		return null;
+		final List<Evento> eventosCliente = controller.findAll();
+		final List<Integer> codigosSequenciaisEventos = new ArrayList<>();
+		final Map<String, Evento> ultimoAlarmeClientes = new HashMap<>();
+		
+		final int limiteMinutosDesarme = 5;
+		
+		for (int i = 1; i < eventosCliente.size(); i++) {
+			final Evento eventoAnterior = eventosCliente.get(i-1);
+			final Evento eventoCorrente = eventosCliente.get(i);
+			
+			if (eventoAnterior.getTipo().equals(Tipo.ALARME)) {
+				ultimoAlarmeClientes.put(eventoAnterior.getCodigoCliente(), eventoAnterior);
+			}
+			
+			if (ultimoAlarmeClientes.containsKey(eventoCorrente.getCodigoCliente())) {
+				final Evento ultimoEventoCliente = ultimoAlarmeClientes.get(eventoCorrente.getCodigoCliente());
+				
+				if (Tipo.DESARME.equals(eventoCorrente.getTipo())) {
+					final Long minutosDesarme = DateUtil.calculateDateDiff(ultimoEventoCliente.getDataInicio(), 
+							eventoCorrente.getDataInicio(), TimeUnit.MINUTES);
+					
+					if (minutosDesarme > 0 && minutosDesarme <= limiteMinutosDesarme) {
+						codigosSequenciaisEventos.add(eventoCorrente.getCodigoSequencial().intValue());
+					}
+				}
+			}
+			
+		}
+		return codigosSequenciaisEventos;
 	}
 
 }

@@ -2,7 +2,7 @@ package br.com.segware.model;
 
 import java.util.Date;
 
-import br.com.segware.Tipo;
+import br.com.segware.enums.Tipo;
 
 public class Evento {
 

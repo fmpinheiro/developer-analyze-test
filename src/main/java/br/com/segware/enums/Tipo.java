@@ -1,4 +1,4 @@
-package br.com.segware;
+package br.com.segware.enums;
 
 public enum Tipo {
 

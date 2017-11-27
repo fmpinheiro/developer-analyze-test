@@ -1,7 +1,9 @@
-package br.com.segware;
+package br.com.segware.service;
 
 import java.util.List;
 import java.util.Map;
+
+import br.com.segware.enums.Tipo;
 
 public interface IAnalisadorRelatorio {
 

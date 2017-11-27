@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.segware.Tipo;
+import br.com.segware.enums.Tipo;
 import br.com.segware.model.Evento;
 
 public class EventoServiceTest {

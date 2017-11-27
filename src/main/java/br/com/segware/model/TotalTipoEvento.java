@@ -1,6 +1,6 @@
 package br.com.segware.model;
 
-import br.com.segware.Tipo;
+import br.com.segware.enums.Tipo;
 
 public class TotalTipoEvento {
 

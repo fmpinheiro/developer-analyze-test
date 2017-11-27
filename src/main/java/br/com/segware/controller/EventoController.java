@@ -52,7 +52,7 @@ public class EventoController implements Controller<Evento> {
 	}
 
 	@Override
-	public List<Evento> findAll() {
+	public Set<Evento> findAll() {
 		return service.findAll();
 	}
 	

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import br.com.segware.controller.Controller;
@@ -26,7 +27,7 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 	
 	@Override
 	public Map<String, Integer> getTotalEventosCliente() {
-		final List<Evento> eventos = controller.findAll();
+		final Set<Evento> eventos = controller.findAll();
 		final Map<String, Integer> numeroEventosCliente = new HashMap<>();
 
 		for (Evento evento : eventos) {
@@ -73,7 +74,7 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 
 	private void totalizarAtendimentosAtendente(final Map<String, Long> quantidadeAtentimentosAtendente,
 			final Map<String, Long> tempoGastoAtendentes) {
-		final List<Evento> eventos = controller.findAll();
+		final Set<Evento> eventos = controller.findAll();
 		
 		for (Evento evento : eventos) {
 			final String codigoAtendente = evento.getCodigoAtendente();
@@ -157,7 +158,7 @@ public class AnalisadorRelatorio implements IAnalisadorRelatorio {
 		}
 	}
 	
-	private List<Evento> getCopy(final List<Evento> original) {
+	private List<Evento> getCopy(final Set<Evento> original) {
 		return new ArrayList<>(original);
 	}
 
